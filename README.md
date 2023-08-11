@@ -25,6 +25,7 @@ allprojects {
     repositories {
         ...
         mavenCentral()
+        maven { url "https://jitpack.io" }
     }
 }
 ```
@@ -35,6 +36,7 @@ pluginManagement {
     repositories {
         ...
         mavenCentral()
+        maven { url "https://jitpack.io" }
     }
 }
 ```
@@ -43,7 +45,7 @@ pluginManagement {
 Check latest version on the [releases page](https://github.com/oleksandrbalan/minabox/releases).
 ```
 dependencies {
-    implementation 'io.github.oleksandrbalan:minabox:$version'
+    implementation 'io.github.kzjn10:minabox:$version'
 }
 ```
 
