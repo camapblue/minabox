@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -55,13 +56,29 @@ public fun MinaBox(
     val contentPaddingPx = contentPadding.toPx()
 
     val itemProvider = rememberItemProvider(content)
+    val direction by rememberUpdatedState(scrollDirection)
 
     var positionProvider by remember { mutableStateOf<MinaBoxPositionProviderImpl?>(null) }
 
     LazyLayout(
         modifier = modifier
             .clipToBounds()
-            .lazyLayoutPointerInput(state, scrollDirection),
+            .pointerInput(Unit) {
+                val velocityTracker = VelocityTracker()
+                coroutineScope {
+                    detectDragGestures(
+                        onDragEnd = { onDragEnd(state, velocityTracker, direction, this) },
+                        onDrag = { change, dragAmount ->
+                            val offset = when (direction) {
+                                MinaBoxScrollDirection.BOTH -> dragAmount
+                                MinaBoxScrollDirection.HORIZONTAL -> Offset(dragAmount.x, 0f)
+                                MinaBoxScrollDirection.VERTICAL -> Offset(0f, dragAmount.y)
+                            }
+                            onDrag(state, change, offset, velocityTracker, this)
+                        }
+                    )
+                }
+            },
         itemProvider = itemProvider,
     ) { constraints ->
         val size = Size(constraints.maxWidth.toFloat(), constraints.maxHeight.toFloat())
@@ -160,11 +177,14 @@ private fun Modifier.lazyLayoutPointerInput(
     scrollDirection: MinaBoxScrollDirection,
 ): Modifier = pointerInput(Unit) {
     val velocityTracker = VelocityTracker()
+    println("Update SCROLLING Direction >> $scrollDirection")
     coroutineScope {
+        println("ALO Direction >> $scrollDirection")
         when (scrollDirection) {
             MinaBoxScrollDirection.BOTH -> detectDragGestures(
                 onDragEnd = { onDragEnd(state, velocityTracker, scrollDirection, this) },
                 onDrag = { change, dragAmount ->
+                    println("OK DIRECTION CHANGE >> $scrollDirection")
                     onDrag(state, change, dragAmount, velocityTracker, this)
                 }
             )
