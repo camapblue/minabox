@@ -45,7 +45,7 @@ pluginManagement {
 Check latest version on the [releases page](https://github.com/oleksandrbalan/minabox/releases).
 ```
 dependencies {
-    implementation 'io.github.kzjn10:minabox:$version'
+    implementation 'io.github.camapblue:minabox:$version'
 }
 ```
 

@@ -63,9 +63,9 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 publishing {
 	publications {
 		register<MavenPublication>("release") {
-			groupId = "com.github.kzjn10"
+			groupId = "com.github.camapblue"
 			artifactId = "minabox"
-			version = "1.3.3"
+			version = "1.3.5"
 
 			afterEvaluate {
 				from(components["release"])
