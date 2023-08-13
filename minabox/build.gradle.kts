@@ -49,6 +49,7 @@ android {
 	publishing {
 		singleVariant("release") {
 			withSourcesJar()
+			withJavadocJar()
 		}
 	}
 }
@@ -64,7 +65,7 @@ publishing {
 		register<MavenPublication>("release") {
 			groupId = "com.github.kzjn10"
 			artifactId = "minabox"
-			version = "1.3.2"
+			version = "1.3.3"
 
 			afterEvaluate {
 				from(components["release"])
