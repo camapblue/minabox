@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.spotless)
     alias(libs.plugins.mavenpublish)
+    id("maven-publish")
 }
 
 configure(subprojects) {

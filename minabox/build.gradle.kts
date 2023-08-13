@@ -46,10 +46,29 @@ android {
 	composeOptions {
 		kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
 	}
+	publishing {
+		singleVariant("release") {
+			withSourcesJar()
+		}
+	}
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
 	kotlinOptions {
 		jvmTarget = libs.versions.java.jvmTarget.get()
+	}
+}
+
+publishing {
+	publications {
+		register<MavenPublication>("release") {
+			groupId = "com.github.kzjn10"
+			artifactId = "minabox"
+			version = "1.3.2"
+
+			afterEvaluate {
+				from(components["release"])
+			}
+		}
 	}
 }
